@@ -1,0 +1,3 @@
+include ':timertextview'
+include ':app'
+rootProject.name = "TimerTextView"
