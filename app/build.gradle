@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.pandey.shubham.timertextview"
+        applicationId "com.pandey.shubham.timertextviewexample"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -21,6 +21,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    dexOptions {
+        preDexLibraries = false
     }
 }
 
@@ -34,4 +42,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+//    implementation 'com.github.Shubhamsdr3:timertextview:0.1.0'
+
+    implementation project(':timertextview')
 }

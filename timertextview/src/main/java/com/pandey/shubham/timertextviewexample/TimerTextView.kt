@@ -1,4 +1,4 @@
-package com.pandey.shubham.timertextview
+package com.pandey.shubham.timertextviewexample
 
 import androidx.appcompat.widget.AppCompatTextView
 
@@ -44,22 +44,7 @@ class TimerTextView : AppCompatTextView {
     }
 
     private fun initialize() {
-        var timeInSeconds = 0
-        var  timeInMins = 0
         taskHandler = Handler()
-
-        increaseTimerTask = object : Runnable {
-            override fun run() {
-                taskHandler?.postDelayed(this, 1000)
-                updateText(timeInSeconds, timeInMins)
-                timeInSeconds++
-                if (timeInSeconds > 60) {
-                    timeInMins += timeInSeconds / 60
-                    timeInSeconds = 0
-                }
-                totalDurationInSeconds++
-            }
-        }
     }
 
     private fun updateText(timeInSeconds: Int, timeInMins: Int) {
@@ -88,6 +73,21 @@ class TimerTextView : AppCompatTextView {
 
     fun startIncrementTimer() {
         if (!isRunning) {
+            totalDurationInSeconds = 0
+            var timeInSeconds = 0
+            var  timeInMins = 0
+            increaseTimerTask = object : Runnable {
+                override fun run() {
+                    taskHandler?.postDelayed(this, 1000)
+                    updateText(timeInSeconds, timeInMins)
+                    timeInSeconds++
+                    if (timeInSeconds > 60) {
+                        timeInMins += timeInSeconds / 60
+                        timeInSeconds = 0
+                    }
+                    totalDurationInSeconds++
+                }
+            }
             isRunning = true
             if (increaseTimerTask != null) {
                 taskHandler?.post(increaseTimerTask!!)
@@ -114,20 +114,35 @@ class TimerTextView : AppCompatTextView {
         startIncrementTimer()
     }
 
-    //TODO:SHUBHAM
-    fun startDecrementTimer(startTimeInSec: Int) {
+    fun startDecrementTimer() {
+        stopTimer()
         var minutes = 0
         var seconds: Int
-        if (startTimeInSec > 60) {
-            minutes = startTimeInSec / 60
-            seconds = startTimeInSec % 60
+        if (totalDurationInSeconds > 60) {
+            minutes = totalDurationInSeconds / 60
+            seconds = totalDurationInSeconds % 60
         } else {
-            seconds = startTimeInSec
+            seconds = totalDurationInSeconds
         }
-        decreaseTimerTask = object : Runnable {
-            override fun run() {
-                seconds--
-                updateText(seconds, minutes)
+        taskHandler = Handler()
+        if (!isRunning) {
+            decreaseTimerTask = object : Runnable {
+                override fun run() {
+                    taskHandler?.postDelayed(this, 1000)
+                    if (seconds > 0) {
+                        seconds--
+                    } else if (minutes > 0) {
+                        minutes--
+                        seconds = 60
+                    } else {
+                        stopTimer()
+                    }
+                    updateText(seconds, minutes)
+                }
+            }
+            if (decreaseTimerTask != null) {
+                isRunning = true
+                taskHandler?.post(decreaseTimerTask!!)
             }
         }
     }
@@ -141,6 +156,5 @@ class TimerTextView : AppCompatTextView {
             taskHandler?.removeCallbacks(increaseTimerTask!!)
         }
         taskHandler = null
-        totalDurationInSeconds = 0
     }
 }
