@@ -72,6 +72,7 @@ class TimerTextView : AppCompatTextView {
             totalDurationInSeconds = 0
             var timeInSeconds = 0
             var  timeInMins = 0
+            taskHandler = Handler()
             increaseTimerTask = object : Runnable {
                 override fun run() {
                     taskHandler?.postDelayed(this, 1000)
