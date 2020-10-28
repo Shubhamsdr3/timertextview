@@ -1,4 +1,4 @@
-package com.pandey.shubham.timertextviewexample
+package com.pandey.shubham.timertextview
 
 import androidx.appcompat.widget.AppCompatTextView
 
@@ -32,19 +32,15 @@ class TimerTextView : AppCompatTextView {
     private var totalDurationInSeconds: Int = 0
 
     constructor(context: Context) : super(context) {
-        initialize()
+
     }
 
     constructor(context: Context, attributeSet: AttributeSet? = null) : super(context, attributeSet) {
-        initialize()
+
     }
 
     constructor(context: Context, attributeSet: AttributeSet? = null, defyStyle: Int = 0) : super(context, attributeSet, defyStyle) {
-        initialize()
-    }
 
-    private fun initialize() {
-        taskHandler = Handler()
     }
 
     private fun updateText(timeInSeconds: Int, timeInMins: Int) {
@@ -110,7 +106,6 @@ class TimerTextView : AppCompatTextView {
         totalDurationInSeconds = 0
         increaseTimerTask = null
         isRunning = false
-        initialize()
         startIncrementTimer()
     }
 

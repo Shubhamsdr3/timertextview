@@ -1,4 +1,4 @@
-package com.pandey.shubham.timertextviewexample
+package com.pandey.shubham.timertextview
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

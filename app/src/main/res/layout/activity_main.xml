@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.pandey.shubham.timertextviewexample.MainActivity">
 
-    <com.pandey.shubham.timertextviewexample.TimerTextView
+    <com.pandey.shubham.timertextview.TimerTextView
         android:id="@+id/timer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

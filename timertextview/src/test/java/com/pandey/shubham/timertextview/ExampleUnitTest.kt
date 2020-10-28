@@ -1,4 +1,4 @@
-package com.pandey.shubham.timertextviewexample
+package com.pandey.shubham.timertextview
 
 import org.junit.Test
 
