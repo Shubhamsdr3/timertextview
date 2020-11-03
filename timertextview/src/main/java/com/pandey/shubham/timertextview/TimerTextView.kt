@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 
 /**
@@ -28,6 +29,8 @@ class TimerTextView : AppCompatTextView {
     private var decreaseTimerTask: Runnable? = null
 
     private var isRunning = false
+
+    private var isPaused = false
 
     private var totalDurationInSeconds: Int = 0
 
@@ -68,11 +71,11 @@ class TimerTextView : AppCompatTextView {
     }
 
     fun startIncrementTimer() {
-        if (!isRunning) {
+        if (!isRunning && !isPaused) {
             totalDurationInSeconds = 0
             var timeInSeconds = 0
             var  timeInMins = 0
-            taskHandler = Handler()
+            taskHandler = Handler(Looper.myLooper()!!)
             increaseTimerTask = object : Runnable {
                 override fun run() {
                     taskHandler?.postDelayed(this, 1000)
@@ -85,10 +88,22 @@ class TimerTextView : AppCompatTextView {
                     totalDurationInSeconds++
                 }
             }
-            isRunning = true
+            if (increaseTimerTask != null) {
+                isRunning = true
+                taskHandler?.post(increaseTimerTask!!)
+            }
+        } else if (isPaused)  {
+            isPaused = false
             if (increaseTimerTask != null) {
                 taskHandler?.post(increaseTimerTask!!)
             }
+        }
+    }
+
+    fun pauseTimer() {
+        if (increaseTimerTask != null && isRunning) {
+            isPaused = true
+            taskHandler?.removeCallbacks(increaseTimerTask!!)
         }
     }
 
@@ -120,7 +135,7 @@ class TimerTextView : AppCompatTextView {
         } else {
             seconds = totalDurationInSeconds
         }
-        taskHandler = Handler()
+        taskHandler = Handler(Looper.myLooper()!!)
         if (!isRunning) {
             decreaseTimerTask = object : Runnable {
                 override fun run() {
@@ -147,6 +162,7 @@ class TimerTextView : AppCompatTextView {
      * Don't forget to remove callback onStop()/onDestroy()
      */
     fun stopTimer() {
+        isPaused = false
         isRunning = false
         if (increaseTimerTask != null) {
             taskHandler?.removeCallbacks(increaseTimerTask!!)
