@@ -18,7 +18,7 @@ To use this library:
   }
   
   //app level build.gradle file include:
-  implementation 'com.github.Shubhamsdr3:timertextview:0.1.5'
+  implementation 'com.github.Shubhamsdr3:timertextview:X.X.X' // <-- replace with latest release version
   
 ```
 
