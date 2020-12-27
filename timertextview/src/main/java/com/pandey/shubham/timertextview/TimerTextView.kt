@@ -7,11 +7,14 @@ import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
 /**
  * @author pandey_shubham 9/10/2020
  */
-class TimerTextView : AppCompatTextView {
+class TimerTextView : AppCompatTextView , LifecycleObserver {
 
     /**
      * Note: Beware of this.taskHandler and View.getHandler()
@@ -32,6 +35,8 @@ class TimerTextView : AppCompatTextView {
 
     private var isPaused = false
 
+    private var isIncrementing = false
+
     private var totalDurationInSeconds: Int = 0
 
     constructor(context: Context) : super(context) {
@@ -44,6 +49,10 @@ class TimerTextView : AppCompatTextView {
 
     constructor(context: Context, attributeSet: AttributeSet? = null, defyStyle: Int = 0) : super(context, attributeSet, defyStyle) {
 
+    }
+
+    fun registerLifeCycle(lifecycle: Lifecycle) {
+        lifecycle.addObserver(this)
     }
 
     private fun updateText(timeInSeconds: Int, timeInMins: Int) {
@@ -70,7 +79,17 @@ class TimerTextView : AppCompatTextView {
         this.typeface = typeface
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume() {
+        if (isIncrementing) {
+            startIncrementTimer()
+        } else {
+            startDecrementTimer()
+        }
+    }
+
     fun startIncrementTimer() {
+        isIncrementing = true
         if (!isRunning && !isPaused) {
             totalDurationInSeconds = 0
             var timeInSeconds = 0
@@ -100,6 +119,7 @@ class TimerTextView : AppCompatTextView {
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun pauseTimer() {
         if (increaseTimerTask != null && isRunning) {
             isPaused = true
@@ -129,6 +149,7 @@ class TimerTextView : AppCompatTextView {
         stopTimer()
         var minutes = 0
         var seconds: Int
+        isIncrementing = false
         if (totalDurationInSeconds > 60) {
             minutes = totalDurationInSeconds / 60
             seconds = totalDurationInSeconds % 60
@@ -161,6 +182,7 @@ class TimerTextView : AppCompatTextView {
     /**
      * Don't forget to remove callback onStop()/onDestroy()
      */
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun stopTimer() {
         isPaused = false
         isRunning = false
