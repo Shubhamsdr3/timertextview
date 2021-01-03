@@ -22,4 +22,27 @@ To use this library:
   
 ```
 
+How to use:
+
+```
+ <com.pandey.shubham.timertextview.TimerTextView
+        android:id="@+id/timer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="10:01" />
+        
+        timer_text.setInitialTime(10) // To set start time(in seconds)
+        
+        timer_text.startIncrementTimer() // to start incrementing by one second
+        
+         timer_text.startDecrementTimer() // to start decrementing by one second
+         
+         timer_text.stopTimer() // to stop the timer(will automatically be resumed)
+         
+         timer_text.resetTimer() // to reset the timer(wll start from 0:0)
+        
+```        
+
+
 Latest release: [![](https://jitpack.io/v/Shubhamsdr3/timertextview.svg)](https://jitpack.io/#Shubhamsdr3/timertextview)
