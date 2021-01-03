@@ -10,8 +10,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        timer_text.registerLifeCycle(lifecycle)
+//        timer_text.registerLifeCycle(lifecycle)
 
+        timer_text.setInitialTime(10)
 
         increment.setOnClickListener {
             timer_text.startIncrementTimer()

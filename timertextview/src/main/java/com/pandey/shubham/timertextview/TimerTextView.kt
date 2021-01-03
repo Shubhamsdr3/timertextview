@@ -70,6 +70,7 @@ class TimerTextView : AppCompatTextView , LifecycleObserver {
     }
 
     fun setInitialTime(totalDurationInSeconds: Int) {
+        this.totalDurationInSeconds = totalDurationInSeconds
         val minutes = totalDurationInSeconds / 60
         val seconds = totalDurationInSeconds % 60
         updateText(seconds, minutes)
@@ -91,9 +92,8 @@ class TimerTextView : AppCompatTextView , LifecycleObserver {
     fun startIncrementTimer() {
         isIncrementing = true
         if (!isRunning && !isPaused) {
-            totalDurationInSeconds = 0
-            var timeInSeconds = 0
-            var  timeInMins = 0
+            var timeInSeconds = totalDurationInSeconds % 60
+            var  timeInMins = totalDurationInSeconds / 60
             taskHandler = Handler(Looper.myLooper()!!)
             increaseTimerTask = object : Runnable {
                 override fun run() {
